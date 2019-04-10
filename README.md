@@ -7,6 +7,15 @@
 ### Certificate with a single domain
 
 ```js
+provider "aws" {
+  alias  = "dns-account"
+
+  assume_role {
+    role_arn = "arn:aws:iam::123345678901:role/dns-management-role"
+  }
+}
+
+
 module "acm_certificate" {
   source = "../"
 
@@ -18,6 +27,12 @@ module "acm_certificate" {
   ]
 
   domains_count = 1
+
+  # different providers for ACM and DNS resources
+  providers = {
+    aws.acm = "aws"
+    aws.r53 = "aws.dns-account"
+  }
 }
 ```
 
@@ -33,10 +48,6 @@ provider "aws" {
 module "acm_certificate" {
   source = "../"
 
-  providers = {
-    aws = "aws.cloudfront"
-  }
-
   domains = [
     {
       name    = "trynotto.click"
@@ -45,6 +56,12 @@ module "acm_certificate" {
   ]
 
   domains_count = 1
+
+  # different providers for ACM and DNS resources
+  providers = {
+    aws.acm = "aws.cloudfront"
+    aws.r53 = "aws"
+  }
 }
 ```
 
@@ -82,6 +99,12 @@ module "acm_certificate" {
   ]
 
   domains_count = 6
+
+  # the same provider for ACM and DNS resources
+  providers = {
+    aws.acm = "aws"
+    aws.r53 = "aws"
+  }
 }
 ```
 ### Certificate with email validation
@@ -116,6 +139,11 @@ module "acm_certificate" {
   wait_for_validation = false
 
   validation_method = "EMAIL"
+
+  providers = {
+    aws.acm = "aws"
+    aws.r53 = "aws"
+  }
 }
 ```
 
@@ -131,6 +159,21 @@ module "acm_certificate" {
 | ttl | The time-to-live for the DNS record. | string | `"60"` | no |
 | validation\_method | The method of validation for the ACM Cert. The allowed values are DNS and EMAIL | string | `"DNS"` | no |
 | wait\_for\_validation | Wait for the certificate to be validated. | string | `"true"` | no |
+| tags | Map of tags for certificate. | map | `{}` | no |
+
+
+You always have to pass `providers` block with two providers:
+- `aws.acm` - for ACM related resources.
+- `aws.r53` - for DNS related resources
+
+In case you want all resources created with the same provider simply pass the same provider:
+
+```
+providers = {
+  aws.acm = "aws"
+  aws.r53 = "aws"
+}
+```
 
 ## Outputs
 

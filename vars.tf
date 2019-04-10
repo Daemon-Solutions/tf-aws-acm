@@ -39,3 +39,9 @@ variable "wait_for_validation" {
   description = "Wait for the certificate to be validated."
   default     = true
 }
+
+variable "tags" {
+  description = "Tags for the certificate."
+  type        = "map"
+  default     = {}
+}
