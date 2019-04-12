@@ -39,7 +39,7 @@ resource "aws_route53_record" "dns_validation_record" {
 
 resource "aws_acm_certificate_validation" "certificate_validation" {
   count           = "${var.enabled && var.wait_for_validation ? 1 : 0}"
-  provider        = "aws.r53"
+  provider        = "aws.acm"
   certificate_arn = "${aws_acm_certificate.cert.arn}"
 
   timeouts {
