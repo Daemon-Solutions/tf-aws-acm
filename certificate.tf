@@ -25,12 +25,13 @@ resource "aws_acm_certificate" "cert" {
 }
 
 resource "aws_route53_record" "dns_validation_record" {
-  count    = "${var.enabled && var.create_dns_records && var.validation_method == "DNS" ? length(var.domains) : 0}"
-  provider = "aws.r53"
-  zone_id  = "${lookup(var.domains[count.index], "zone_id")}"
-  name     = "${lookup(aws_acm_certificate.cert.domain_validation_options[count.index], "resource_record_name")}"
-  type     = "${lookup(aws_acm_certificate.cert.domain_validation_options[count.index], "resource_record_type")}"
-  ttl      = "${var.ttl}"
+  count           = "${var.enabled && var.create_dns_records && var.validation_method == "DNS" ? length(var.domains) : 0}"
+  provider        = "aws.r53"
+  allow_overwrite = true
+  zone_id         = "${lookup(var.domains[count.index], "zone_id")}"
+  name            = "${lookup(aws_acm_certificate.cert.domain_validation_options[count.index], "resource_record_name")}"
+  type            = "${lookup(aws_acm_certificate.cert.domain_validation_options[count.index], "resource_record_type")}"
+  ttl             = "${var.ttl}"
 
   records = [
     "${lookup(aws_acm_certificate.cert.domain_validation_options[count.index], "resource_record_value")}",
