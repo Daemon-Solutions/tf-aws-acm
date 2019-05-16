@@ -4,6 +4,9 @@
 
 ## Usage
 
+If `wait_for_validation = false` is used it is assumed that user will check if the certificate has been validated before using it.
+
+
 ### Certificate with a single domain
 
 ```js
@@ -179,7 +182,7 @@ providers = {
 
 | Name | Description |
 |------|-------------|
-| certificate\_arn | The ARN of the AWS ACM Certificate, only returned when wait_for_validation = true to prevent usage of invalid certificates. |
+| certificate\_arn | The ARN of the AWS ACM Certificate. |
 
 ## References
 
