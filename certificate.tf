@@ -11,8 +11,15 @@ data "template_file" "domain_names" {
   template = "${lookup(var.domains[count.index], "name")}"
 }
 
+data "template_file" "zone_ids" {
+  count    = "${var.enabled ? var.domains_count : 0}"
+  template = "${lookup(var.domains[count.index], "zone_id")}"
+}
+
 locals {
-  domain_names = ["${data.template_file.domain_names.*.rendered}"]
+  domain_names             = ["${data.template_file.domain_names.*.rendered}"]
+  zone_ids                 = ["${data.template_file.zone_ids.*.rendered}"]
+  domains_and_zone_ids_map = "${zipmap(local.domain_names, local.zone_ids)}"
 }
 
 resource "aws_acm_certificate" "cert" {
@@ -25,10 +32,10 @@ resource "aws_acm_certificate" "cert" {
 }
 
 resource "aws_route53_record" "dns_validation_record" {
-  count           = "${var.enabled && var.create_dns_records && var.validation_method == "DNS" ? length(var.domains) : 0}"
+  count           = "${var.enabled && var.create_dns_records && var.validation_method == "DNS" ? var.domains_count : 0}"
   provider        = "aws.r53"
   allow_overwrite = true
-  zone_id         = "${lookup(var.domains[count.index], "zone_id")}"
+  zone_id         = "${lookup(local.domains_and_zone_ids_map, lookup(aws_acm_certificate.cert.domain_validation_options[count.index], "domain_name"))}"
   name            = "${lookup(aws_acm_certificate.cert.domain_validation_options[count.index], "resource_record_name")}"
   type            = "${lookup(aws_acm_certificate.cert.domain_validation_options[count.index], "resource_record_type")}"
   ttl             = "${var.ttl}"
