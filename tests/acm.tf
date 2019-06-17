@@ -7,7 +7,7 @@ module "acm_certificate" {
   source = "../"
 
   providers = {
-    aws = "aws.cloudfront"
+    aws = aws.cloudfront
   }
 
   domains = [
@@ -25,15 +25,15 @@ module "acm_certificate" {
     },
     {
       name    = "stage.trynotto.click"
-      zone_id = "Z3A73ZVWER7IYF"
+      zone_id = "Z3Q5JMOREGM7ER"
     },
     {
       name    = "api.stage.trynotto.click"
-      zone_id = "Z3A73ZVWER7IYF"
+      zone_id = "Z3Q5JMOREGM7ER"
     },
     {
       name    = "www.stage.trynotto.click"
-      zone_id = "Z3A73ZVWER7IYF"
+      zone_id = "Z3Q5JMOREGM7ER"
     },
   ]
 

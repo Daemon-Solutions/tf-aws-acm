@@ -5,7 +5,7 @@ variable "create_dns_records" {
 
 variable "domains" {
   description = "List of maps of domains to associate with the new certificate. For example: domains = [ { name = \"www.example.com\"  zone_id = \"Z123456789\" } ]"
-  type        = "list"
+  type        = list(map(string))
 }
 
 variable "domains_count" {
@@ -19,19 +19,19 @@ variable "enabled" {
 
 variable "timeout" {
   description = "The length of time in minutes Terraform should wait for to allow AWS to validate the ACM Certificate."
-  type        = "string"
+  type        = string
   default     = "45"
 }
 
 variable "ttl" {
   description = "The time-to-live for the DNS record."
-  type        = "string"
+  type        = string
   default     = "60"
 }
 
 variable "validation_method" {
   description = "The method of validation for the ACM Cert. The allowed values are DNS and EMAIL"
-  type        = "string"
+  type        = string
   default     = "DNS"
 }
 
@@ -42,6 +42,6 @@ variable "wait_for_validation" {
 
 variable "tags" {
   description = "Tags for the certificate."
-  type        = "map"
+  type        = map(string)
   default     = {}
 }

@@ -1,6 +1,15 @@
 # tf-aws-acm
 
- This will create an ACM certificate in a specified region and creates the Route 53 DNS records if DNS validation is selected and if the DNS Zone File is located in AWS Route 53.
+This will create an ACM certificate in a specified region and creates the Route 53 DNS records if DNS validation is selected and if the DNS Zone File is located in AWS Route 53.
+
+## Terraform version compatibility
+
+| Module version    | Terraform version |
+|-------------------|-------------------|
+| 1.x.x             | 0.12.x            |
+| 0.2.1 and earlier | 0.11.x            |
+
+Upgrading from 0.11.x and earlier to 0.12.x should be seamless.  You can simply update the `ref` in your `source` to point to a version greater than `1.0.0`.
 
 ## Usage
 
