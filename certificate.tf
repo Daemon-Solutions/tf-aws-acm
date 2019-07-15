@@ -29,6 +29,10 @@ resource "aws_acm_certificate" "cert" {
   subject_alternative_names = slice(local.domain_names, 1, length(local.domain_names))
   validation_method         = var.validation_method
   tags                      = var.tags
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_route53_record" "dns_validation_record" {
