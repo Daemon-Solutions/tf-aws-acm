@@ -5,5 +5,5 @@ output "certificate_arn" {
 
 output "dns_validation_records" {
   description = "A list of DNS records required for DNS Validation of the ACM Certificate."
-  value       = "${concat(list(), aws_acm_certificate.cert.*.domain_validation_options)}"
+  value       = "${flatten(concat(list(), aws_acm_certificate.cert.*.domain_validation_options))}"
 }

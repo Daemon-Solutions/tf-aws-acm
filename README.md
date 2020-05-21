@@ -183,6 +183,7 @@ providers = {
 | Name | Description |
 |------|-------------|
 | certificate\_arn | The ARN of the AWS ACM Certificate. |
+| dns\_validation\_records | A list of DNS records required for DNS Validation of the ACM Certificate. |
 
 ## References
 
