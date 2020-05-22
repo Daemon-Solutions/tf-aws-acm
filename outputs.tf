@@ -8,5 +8,5 @@ output "certificate_arn" {
 
 output "dns_validation_records" {
   description = "A list of DNS records required for DNS Validation of the ACM Certificate."
-  value       = length(aws_acm_certificate.cert) > 0 ? aws_acm_certificate.cert.0.domain_validation_options[*] : []
+  value       = length(aws_acm_certificate.cert) > 0 ? flatten(aws_acm_certificate.cert.0.domain_validation_options[*]) : []
 }
