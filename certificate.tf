@@ -8,7 +8,7 @@ provider "aws" {
 
 data "template_file" "domain_names" {
   count    = var.enabled ? var.domains_count : 0
-  template = var.domains[count.index]["name"]
+  template = trimsuffix(var.domains[count.index]["name"], ".")
 }
 
 data "template_file" "zone_ids" {
