@@ -10,3 +10,8 @@ output "dns_validation_records" {
   description = "A list of DNS records required for DNS Validation of the ACM Certificate."
   value       = length(aws_acm_certificate.cert) > 0 ? flatten(aws_acm_certificate.cert.0.domain_validation_options[*]) : []
 }
+
+output "domains_and_zone_ids_map" {
+  description = "ID map for debugging"
+  value       = local.domains_and_zone_ids_map
+}

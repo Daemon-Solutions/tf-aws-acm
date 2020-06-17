@@ -39,9 +39,9 @@ resource "aws_route53_record" "dns_validation_record" {
   count           = var.enabled && var.create_dns_records && var.validation_method == "DNS" ? var.domains_count : 0
   provider        = aws.r53
   allow_overwrite = true
-  zone_id         = local.domains_and_zone_ids_map[aws_acm_certificate.cert.0.domain_validation_options[count.index]["domain_name"]]
-  name            = aws_acm_certificate.cert.0.domain_validation_options[count.index]["resource_record_name"]
-  type            = aws_acm_certificate.cert.0.domain_validation_options[count.index]["resource_record_type"]
+  zone_id         = lookup(local.domains_and_zone_ids_map, "${lookup(aws_acm_certificate.cert.0.domain_validation_options[count.index], "domain_name")}.")
+  name            = aws_acm_certificate.cert.0.domain_validation_options[count.index].resource_record_name
+  type            = aws_acm_certificate.cert.0.domain_validation_options[count.index].resource_record_type
   ttl             = var.ttl
 
   records = [
